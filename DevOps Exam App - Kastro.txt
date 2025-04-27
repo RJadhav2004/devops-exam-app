@@ -81,13 +81,19 @@ sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plug
 
 ----> esc ----> :wq ----> sudo chmod +x docker.sh ----> ./docker.sh ----> docker --version
 
-Try to pull some default image ----> docker pull hello-world ----> You will be able to pull the image. If you are unable to pull the image. Execute the below command to provide necessary permissions ----> sudo chmod 666 /var/run/docker.sock ----> docker pull hello-world ----> You will be able to pull the image
+Try to pull some default image ----> docker pull hello-world ----> You will be able to pull the image. If you are unable to pull the image.
+
+# Run Below command  I have added below 2 commands
+#docker image
+#docker ps
+Execute the below command to provide necessary permissions ----> sudo chmod 666 /var/run/docker.sock ----> docker pull hello-world ----> You will be able to pull the image
 
 After executing docker installation commands; execute the below commands in VM;
+
 # Add jenkins user to docker group
 sudo usermod -aG docker jenkins
 
-# Restart Jenkins to apply changes
+# Restart Jenkins to apply changes   after restart reload the jenkis dashboard
 sudo systemctl restart jenkins
 
 # Verify Jenkins can access Docker
@@ -158,7 +164,7 @@ Goto the Jenkins console ---> Manage Jenkins ---> Security ---> Credentials --->
 ==========================================
 Lets configure the SonarQube server;
 Goto SonarQube console --- Click on 'Administration' --- Click on 'Security' --- Select 'Users' --- You can see 'Tokens' --- Click on 3 dashes icon --- A New dialogue --- Name: token, Expires in: 90days --- Generate --- You can see token in green colour. Copy it. 
-Token: squ_655a181a2da0ce3bfd088ff588e1e282f7c71a1c
+Token: squ_e05f950538f058df91f3c3865835fd2148118837
 
 Manage Jenkins --- Security --- Credentials --- Click on 'global' --- Click on 'Add Credentials' --- Kind: Secret text, Scope: Global, Secret: <Paste the token copied from SonarQube console>, ID: sonar-token, Description: sonar-token --- Create
 
@@ -212,15 +218,15 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "kastrov/devopsexamapp:latest"
+        DOCKER_IMAGE = "rjadhav20/devopsexamapp:latest"
         SCANNER_HOME = tool 'sonar-scanner'
     }
 
     stages {
         stage('Git Checkout') {
             steps {
-                git url: 'https://github.com/KastroVKiran/devops-exam-app.git', 
-                    branch: 'master'
+                git 'https://github.com/RJadhav2004/devops-exam-app.git', branch: 'master'
+                    
             }
         }
 
